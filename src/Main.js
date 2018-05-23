@@ -10,20 +10,24 @@ class Main extends React.Component {
     constructor() {
         super()
         this.state = {
+            currentNote: null,
             notes: [
-            {
-                id: 1,
-                title: 'JS thoughts',
-                body: 'I just love JS so much.',
-            },
-            {
-                id: 2,
-                title: 'Breakfast',
-                body: 'FOR IT!',
-            },
-            
-            ]
+                {
+                    id: 1,
+                    title: 'JS thoughts',
+                    body: 'I just love JS so much.',
+                },
+                {
+                    id: 2,
+                    title: 'Breakfast',
+                    body: 'FOR IT!',
+                },
+            ],
         }
+    }
+
+    setCurrentNote = (note) => {
+        this.setState({ currentNote: note})
     }
 
     render() {
@@ -34,7 +38,10 @@ class Main extends React.Component {
             style={style}
         >
             <Sidebar />
-            <NoteList notes={this.state.notes}/>
+            <NoteList 
+                notes={this.state.notes}
+                setCurrentNote={this.setCurrentNote}
+            />
             <NoteForm />
         </div>
     )
