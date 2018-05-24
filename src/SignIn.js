@@ -9,5 +9,4 @@ const SignIn = ({ handleAuth }) => {
     </div>
   )
 }
-
 export default SignIn
