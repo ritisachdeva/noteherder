@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import base from './base'
 import Sidebar from './Sidebar'
 import NoteList from './NoteList'
 import NoteForm from './NoteForm'
@@ -14,10 +15,11 @@ class Main extends Component {
   }
 
   componentWillMount() {
-      const notes= JSON.parse(localStorage.getItem('notes'))
-      if(notes){
-        this.setState({notes})
-      }
+     base.syncState('notes', {
+         context: this,
+         state: 'notes',
+         asArray: true,
+     })
   }
 
   componentDidUpdate(){
