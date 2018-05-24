@@ -15,16 +15,11 @@ class Main extends Component {
   }
 
   componentWillMount() {
-     base.syncState('notes', {
-         context: this,
-         state: 'notes',
-         asArray: true,
-     })
-  }
-
-  componentDidUpdate(){
-    const notesString = JSON.stringify(this.state.notes)
-    localStorage.setItem('notes', notesString)
+    base.syncState('notes', {
+      context: this,
+      state: 'notes',
+      asArray: true,
+    })
   }
 
   blankNote = () => {
@@ -46,30 +41,30 @@ class Main extends Component {
   saveNote = (note) => {
     const notes = [...this.state.notes]
 
-    if (note.id){
-        //existing note
-        const i = notes.findIndex(currentNote => currentNote.id === note.id)
-        notes[i] = note
-    }
-    else{
-        //new note
-        note.id= Date.now()
-        notes.push(note)
+    if (note.id) {
+      // existing note
+      const i = notes.findIndex(currentNote => currentNote.id === note.id)
+      notes[i] = note
+    } else {
+      // new note
+      note.id = Date.now()
+      notes.push(note)
     }
 
     this.setState({ notes, currentNote: note })
   }
 
-  removeNote = (note) => {
+  removeCurrentNote = () => {
     const notes = [...this.state.notes]
-    const i = notes.findIndex((currentNote) => currentNote.id === note.id)
-    if (i> -1){
-        notes.splice(i, 1)
-        this.setState({ notes }) 
+    const i = notes.findIndex(note => note.id === this.state.currentNote.id)
+
+    if (i > -1) {
+      notes.splice(i, 1)
+      this.setState({ notes })
     }
+
     this.resetCurrentNote()
   }
-
 
   render() {
     return (
@@ -77,7 +72,10 @@ class Main extends Component {
         className="Main"
         style={style}
       >
-        <Sidebar resetCurrentNote={this.resetCurrentNote} />
+        <Sidebar
+          resetCurrentNote={this.resetCurrentNote}
+          signOut={this.props.signOut}
+        />
         <NoteList
           notes={this.state.notes}
           setCurrentNote={this.setCurrentNote}
@@ -85,7 +83,7 @@ class Main extends Component {
         <NoteForm
           currentNote={this.state.currentNote}
           saveNote={this.saveNote}
-          removeNote={this.removeNote}
+          removeCurrentNote={this.removeCurrentNote}
         />
       </div>
     )
